@@ -1,1 +1,0 @@
-const openWeatherMapApiKey = '[API KEY]';
