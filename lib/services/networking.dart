@@ -1,22 +1,21 @@
 import 'package:http/http.dart' as http;
-import 'package:clima/utilities/apiKey.dart';
+import 'dart:convert';
 
 class Networking {
-  String url;
-
   Networking(this.url);
+  final url;
 
-  Future<http.Response> getWeatherApiData(double lat, double lon) async {
-    var apiUrl =
-        'https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=&appid=$openWeatherMapApiKey';
-
-    print('apiUrl: $apiUrl');
-
-    var response = await http.get(apiUrl);
+  Future getWeatherApiData() async {
+    var response = await http.get(url);
 
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
 
-    return response;
+    if (response.statusCode == 200) {
+      String data = response.body;
+      return jsonDecode(data);
+    } else {
+      print(response.statusCode);
+    }
   }
 }
