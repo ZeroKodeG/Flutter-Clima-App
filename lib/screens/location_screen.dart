@@ -67,6 +67,104 @@ class _LocationScreenState extends State<LocationScreen> {
             image: AssetImage('images/location_background.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
+              Colors.white.withOpacity(0.8),
+              BlendMode.dstATop,
+            ),
+          ),
+        ),
+        constraints: BoxConstraints.expand(),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () async {
+                      var weatherData = await weatherModel.getLocationWeather();
+                      updateUI(weatherData);
+                    },
+                    child: Icon(
+                      Icons.near_me,
+                      size: 50.0,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      var typedName = await Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CityScreen();
+                      }));
+                      print('Typed Name: $typedName');
+                      if (typedName != null && typedName != '') {
+                        var weatherData =
+                            await weatherModel.getCityWeather(typedName);
+                        updateUI(weatherData);
+                        print('Get new city Weather');
+                      }
+                    },
+                    child: Icon(
+                      Icons.search,
+                      size: 50.0,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.all(20.0),
+                child: TextField(
+                  style: TextStyle(color: Colors.black),
+                  decoration: kTextFieldDecoration,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 25.0),
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          cityName,
+                          style: TextStyle(fontSize: 40),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 25.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      '${temperature}°',
+                      style: kTempTextStyle,
+                    ),
+                    Text(
+                      '$conditionIcon',
+                      style: kConditionTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /*
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/location_background.jpg'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
           ),
         ),
@@ -104,7 +202,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       }
                     },
                     child: Icon(
-                      Icons.location_city,
+                      Icons.search,
                       size: 50.0,
                     ),
                   ),
@@ -139,4 +237,5 @@ class _LocationScreenState extends State<LocationScreen> {
       ),
     );
   }
+   */
 }
